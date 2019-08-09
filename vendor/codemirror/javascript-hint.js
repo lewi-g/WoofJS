@@ -31,8 +31,9 @@
   function scriptHint(editor, keywords, getToken, options) {
     // Find the token at the cursor
     var cur = editor.getCursor(),
-      token = getToken(editor, cur);
-    if (/\b(?:string|comment)\b/.test(token.type)) return;
+      token = getToken(editor, cur),
+      editorContents = editor.getValue();
+    if (/\b(?:string|comment|number)\b/.test(token.type)) return;
     token.state = CodeMirror.innerMode(editor.getMode(), token.state).state;
 
     // If it's not a 'word-style' token, ignore the token.
@@ -60,7 +61,7 @@
       context.push(tprop);
     }
     return {
-      list: getCompletions(token, context, keywords, options),
+      list: getCompletions(token, context, keywords, options, editorContents),
       from: Pos(cur.line, token.start),
       to: Pos(cur.line, token.end)
     };
@@ -115,7 +116,7 @@
   var regularpolygonProps = spriteProps.concat(["sides = 6", "length = 100", "color", "color = 'orange'"])
   var ovalProps = spriteProps.concat(["width = 20", "height = 55", "color", "color = 'green'"])
 
-  function getCompletions(token, context, keywords, options) {
+  function getCompletions(token, context, keywords, options, editorContents) {
     var found = [],
       start = token.string,
       global = document.getElementById("preview").contentWindow;
@@ -123,7 +124,18 @@
     function maybeAdd(str) {
       if (str.lastIndexOf(start, 0) == 0 && !arrayContains(found, str)) found.push(str);
     }
-
+    
+    function flatMap(list, func) {
+      return list.map(func).reduce((accumulator, currentValue) => accumulator.concat(currentValue))
+    }
+    
+    // add all words in the editor to the list
+    var editorTokens = editorContents.match(/\w+/g)
+    // minus words between quotation marks
+    var betweenQuotes = flatMap(editorContents.match(/"(.*?)"|'(.*?)'/g), quoted => quoted.match(/\w+/g))
+    // minus the word currently being typed
+    editorTokens = editorTokens.filter(t => !betweenQuotes.includes(t) && t != token.string)
+    
     function gatherCompletions(obj){
       if (typeof obj == "string") forEach(stringProps, maybeAdd);
       else if (obj.type == "image") forEach(imageProps, maybeAdd);
@@ -173,9 +185,9 @@
       var ovl = 'var ovalSprite1 = new Oval({\n  width: 20, \n  height: 55, \n  color: "green"\n})'
       var pol = 'var polygonSprite1 = new Polygon({\n  sides: 6, \n  length: 100, \n  color: "orange"\n})'
       var lne = 'var lineSprite1 = new Line({\n  color: "pink", \n  width: 10, \n  x: -100, \n  y: 100, \n  x1: 10, \n  y1: 20\n})'
-      var iff = 'if () {\n  \n}'
+      var iff = 'if (/* something is */ true) {\n  \n}'
       var elsee = 'else {\n  \n}'
-      var woof = [iff, elsee, 'randomColor()', 'when(() => mouseDown, () => {\n  \n})', 'random(0, 10)', "var variable1 = 0", img, txt, clc, rct, ovl, lne, pol, "new Image({})", "new Rectangle({})", "new Line({})", "new Text({})", "new Circle({})","new Polygon({})","new Oval({})", "cameraX", "cameraY", "ready", "height", "width", "minX", "maxX", "minY", "maxY", "randomX()", "randomY()","freeze()", "defrost()", "mouseDown", "mouseX", "mouseY", "pMouseX", "pMouseY", "mouseXSpeed", "mouseYSpeed", "keysDown.includes('UP')", "onMouseMove(() => {\n  \n})", "onMouseDown(() => {\n  \n})", "onMouseUp(() => {\n  \n})", "onKeyDown(() => {\n  \n})", "onKeyUp(() => {\n  \n})", "every(1, 'second', () => {\n  \n})", "forever(() => {\n  \n})", "when(() => mouseDown, () => {\n  \n})", "repeat(10, () => {\n  \n})", "repeatUntil(() => mouseDown, () => {\n  \n})", "after(1, 'second', () => {\n  \n})", "clearPen()", "mobile()",'sqrt(9)','abs(-9)','floor(9.8)','ceiling(9.8)','sin(90)','cos(90)','tan(45)','asin(1)','acos(0)','atan(1)','ln(4)','log(100)','pow(10,2)']
+      var woof = [iff, elsee, 'randomColor()', 'when(() => mouseDown, () => {\n  \n})', 'random(0, 10)', "var variable1 = 0", img, txt, clc, rct, ovl, lne, pol, "new Image({})", "new Rectangle({})", "new Line({})", "new Text({})", "new Circle({})","new Polygon({})","new Oval({})", "cameraX", "cameraY", "ready", "height", "width", "minX", "maxX", "minY", "maxY", "randomX()", "randomY()","freeze()", "defrost()", "mouseDown", "mouseX", "mouseY", "pMouseX", "pMouseY", "mouseXSpeed", "mouseYSpeed", "keysDown.includes('UP')", "onMouseMove(() => {\n  \n})", "onMouseDown(() => {\n  \n})", "onMouseUp(() => {\n  \n})", "onKeyDown(() => {\n  \n})", "onKeyUp(() => {\n  \n})", "every(1, 'second', () => {\n  \n})", "forever(() => {\n  \n})", "when(() => mouseDown, () => {\n  \n})", "repeat(10, () => {\n  \n})", "repeatUntil(() => mouseDown, () => {\n  \n})", "after(1, 'second', () => {\n  \n})", "clearPen()", "mobile()",'sqrt(9)','abs(-9)','floor(9.8)','ceiling(9.8)','sin(90)','cos(90)','tan(45)','asin(1)','acos(0)','atan(1)','ln(4)','log(100)','pow(10,2)', 'timer()', 'resetTimer()', 'Math.round(4.2)']
       
       var backdropMethods = ["setBackdropURL('./images/q6Bqraw.jpg')", 
                              "setBackdropColor('blue')", 
@@ -187,12 +199,7 @@
       woof = woof.concat(backdropMethods)
       forEach(woof, maybeAdd)
       
-      // If not, just look in the global object and any local scope
-      // (reading into JS mode internals to get at the local and global variables)
-      
-      
-      //for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
-      // for (var v = token.state.globalVars; v; v = v.next) maybeAdd(v.name);
+      forEach(editorTokens, maybeAdd)
       
       forEach(keywords, maybeAdd);
     }

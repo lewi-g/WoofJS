@@ -29,7 +29,7 @@
   <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
   <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
-  <script type="text/javascript" src="https://cdn.rawgit.com/showdownjs/showdown/984942e239c9bda522b9c5544aba72647983b3f1/dist/showdown.min.js"></script>
+  <script type="text/javascript" src="https://rawcdn.githack.com/showdownjs/showdown/984942e239c9bda522b9c5544aba72647983b3f1/dist/showdown.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -63,7 +63,7 @@
   <script src="./vendor/codemirror/scrollpastend.js"></script>
   <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script>
   <script data-presets="es2015" src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.14.0/babel.min.js"></script>
-  <script src="https://cdn.rawgit.com/beautify-web/js-beautify/1b52eb1f90daaefa6ff0fa7736f97fbfc58093c1/js/lib/beautify.js"></script>
+  <script src="https://rawcdn.githack.com/beautify-web/js-beautify/1b52eb1f90daaefa6ff0fa7736f97fbfc58093c1/js/lib/beautify.js"></script>
   
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
@@ -577,7 +577,7 @@
             <img @click="projectbar = !projectbar" style="margin: 5px; width: 16px; height:18px; cursor:pointer" src="./images/minimize.png" title="Minimize">
           </span>
         </div>
-        <iframe id="projectsIframe" src="http://coding.space/woof/index.html"></iframe>
+        <iframe id="projectsIframe" src="//coding.space/woof/index.html"></iframe>
       </div>
 
 
@@ -800,13 +800,13 @@
           $('#shareModal').modal('show')
         },
         link: function(){
-          return "http://woofjs.com/create.html#" + getID()
+          return "https://woofjs.com/create.html#" + getID()
         },
         fullLink: function(){
-          return "http://woofjs.com/full.html#" + getID()
+          return "https://woofjs.com/full.html#" + getID()
         },
         embed: function(){
-          return "<iframe src=\"http://woofjs.com/full#" + getID() + "\">\n</iframe>"
+          return "<iframe src=\"https://woofjs.com/full#" + getID() + "\">\n</iframe>"
         },
         selectAll: function(){
           editor.execCommand("selectAll")
@@ -1664,7 +1664,7 @@
             // then we create a script tag with the woof code and add it to the page
             var script = iframe.contentWindow.document.createElement("script");
             script.type = "text/javascript";
-            script.src = "./dist/woof.js";
+            script.src = "./woof.js";
             iframe.contentWindow.document.body.appendChild(script);
 
             script.onload = function() {
@@ -1706,12 +1706,6 @@
     ga('send', 'pageview');
 
   </script>
-<script type="text/javascript">
-    window._chatlio = window._chatlio||[];
-    !function(){ var t=document.getElementById("chatlio-widget-embed");if(t&&window.ChatlioReact&&_chatlio.init)return void _chatlio.init(t,ChatlioReact);for(var e=function(t){return function(){_chatlio.push([t].concat(arguments)) }},i=["configure","identify","track","show","hide","isShown","isOnline"],a=0;a<i.length;a++)_chatlio[i[a]]||(_chatlio[i[a]]=e(i[a]));var n=document.createElement("script"),c=document.getElementsByTagName("script")[0];n.id="chatlio-widget-embed",n.src="https://w.chatlio.com/w.chatlio-widget.js",n.async=!0,n.setAttribute("data-embed-version","2.1");
-       n.setAttribute('data-widget-id','1d14bee6-57d0-40e3-4768-8cc33e8abf47');
-       c.parentNode.insertBefore(n,c);
-    }();
-</script>
+
 </body>
 </html>

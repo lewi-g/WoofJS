@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script src="https://cdn.rawgit.com/HubSpot/tether/5693ced3fd13efff97eb0cd2f9a0d4ad8fe0fc22/dist/js/tether.min.js"></script>
+    <script src="https://rawcdn.githack.com/HubSpot/tether/5693ced3fd13efff97eb0cd2f9a0d4ad8fe0fc22/dist/js/tether.min.js"></script>
     <link href="./docs.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.0/vue.js"></script>
@@ -67,6 +67,16 @@
         var updateColor = function(e) {
             e.target.parentElement.nextElementSibling.childNodes[2].childNodes[0].innerHTML = e.target.value
             e.target.parentElement.nextElementSibling.childNodes[0].setAttribute("data-clipboard-text", e.target.value)
+        }
+        
+        var browseImages = function() {
+          document.getElementById("uploadInput").click()
+        }
+        
+        var uploadFile = function(files) {
+          if (files.length === 1) {
+            window.top.postMessage(files[0], '*')
+          }
         }
 
         Vue.component('vue-block', {
@@ -200,25 +210,6 @@
                                 tags:"sunrise sunset url integration"
                             }
                         ],
-                        "Chuck Norris Jokes":[
-                            {
-                                integrationDescription:"Use the Chuck Norris integration to get random Chuck Norris Jokes.",
-                                integrationDescriptionClass:"alert-info",
-                                integrationDocumentationLink:"https://api.chucknorris.io/"
-                            },
-                            {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
-                            {
-                                description:"Here is a walk through of how to display a Chuck Norris joke:",
-                                code:'//First set up temporary text that will be replaced\nvar temp = new Text({\n text: "...", \n size: 15, \n color: "black", \nfontFamily: "arial",\n})\n//Then set the url for your request\nvar url = "https://api.chucknorris.io/jokes/random"\n//Finaly call the getData() function\ngetData(url, data => {\n //Replace the temporary text\n temp.text = data.value\n})',
-                                tags:"chuck norris jokes integration"
-                            },
-                            {
-                                description:"Here is a walk through of how to display a Chuck Norris joke from a specific category:",
-                                html:"<a target='_blank'  href='https://api.chucknorris.io/jokes/categories'>Click here to see all the options for categories</a>",
-                                code:'//First set up temporary text that will be replaced\nvar temp = new Text({\n text: "...", \n size: 15, \n color: "black", \nfontFamily: "arial",\n})\n//Then set your variable for the request\nvar category = "sport"\n//Then set the url for your request\nvar url = "https://api.chucknorris.io/jokes/random?category=" + category\n//Finaly call the getData() function\ngetData(url, data => {\n //Replace the temporary text\n temp.text = data.value\n})',
-                                tags:"chuck norris jokes integration"
-                            },
-                        ],
                         "Scientific Calculator":[
                             {
                                 integrationDescription:"Use Netwon Scientific Calculator integration to preform complex calculations.",
@@ -266,7 +257,7 @@
                             {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
                             {   
                                 description:"Firebase is similar to Scratch's cloud data as it allows you to store data in the cloud. Here is a quick run through of how to use Firebase to store a high score:",
-                                html:"<iframe src='http://coding.space/woof/high_score.html' width='100%' height='500px' style='border:none;shadow:none;'></iframe>",
+                                html:"<iframe src='//coding.space/woof/high_score.html' width='100%' height='500px' style='border:none;shadow:none;'></iframe>",
                                 tags:"firebase cloud storage high score integration"
                             },
                         ],
@@ -472,7 +463,11 @@
                          }
                         ],
                         Image: [
-                            
+                            {
+                              html: '<button class="btn btn-medium btn-info" onclick="browseImages()">Upload Image</button>' + 
+                                    '<input id="uploadInput" onchange="uploadFile(this.files)" style="display:none" type="file" name="pic" accept="image/*">',
+                              tags: "picture image custom external upload sprite"
+                            },
                             {
                                 url: "./images/kpU9y5M.png",
                                 code: 'var unicorn = new Image({\n  url: "./docs/images/unicorn.png",\n  width: 120, \n  height: 80,\n})',
@@ -692,7 +687,7 @@
                             
                             {
                                 url: "./images/boss-ship.png",
-                                code: 'var bossShip2 = new Image({\n  url: "./docs/boss-ship/explosion.png",\n  width: 100, \n  height: 100,\n})',
+                                code: 'var bossShip2 = new Image({\n  url: "./docs/images/boss-ship.png",\n  width: 100, \n  height: 100,\n})',
                                 tags: "ship sprite",
                             },
                             
@@ -1354,24 +1349,24 @@
                      {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
                      {
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f7535724b4133362e706e67",
-                        code: 'if(\/* condition */) {\n  \/* then do stuff here */\n}',
+                        code: 'if(\/* something is */ true) {\n  \/* then do stuff here */\n}',
                         tags: 'if then when condition control'
                     }, {
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f52594f705361712e706e67",
-                        code: 'if(\/* condition */) {\n  \/* then do stuff here */\n} else {\n  \/* otherwise do other stuff here */. \n}',
+                        code: 'if(\/* something is */ true) {\n  \/* then do stuff here */\n} else {\n  \/* otherwise do other stuff here */ \n}',
                         tags: 'if else when condition control'
                     }, {
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f615139694a4e772e706e67",
-                        code: 'repeatUntil(() => \/* condition */, () => {\n  \/* something to repeat */\n})',
+                        code: 'repeatUntil(() => \/* something is */ true, () => {\n  \/* something to repeat */\n})',
                         tags: 'repeat until control'
                     }, {
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f615139694a4e772e706e67",
-                        code: 'repeatUntil(() => \/* condition */, () => {}, () => {\n  \/* something to do after condition is true, once */\n})',
+                        code: 'repeatUntil(() => \/* something is */ true, () => {}, () => {\n  \/* something to do after condition is true, once */\n})',
                         tags: "wait until repeat control",
                         description: 'There is no wait-until in JavaScript. You can simulate a wait-until block by specifying a third function to a repeatUntil. Refer to the "Control Flow" section below for more details.'
                     }, {
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f4f586c704b394a2e706e67",
-                        code: 'when(() => \/* condition */, () => {\n  \/* do stuff here */\n})',
+                        code: 'when(() => \/* something is */ true, () => {\n  \/* do stuff here */\n})',
                         tags: "forever if when control",
                         description: 'when() is a short-hand for a forever-if statement:'
                     },
@@ -1533,7 +1528,7 @@
                         tags: "touching intersecting overlap sensing"
                     }, 
                      {
-                        html: "<b>For circular sprites, <code>distanceTo()</code> will be more accurate than <code>touching()</code>.",
+                        html: "<b>For some sprites, <code>distanceTo()</code> will be more accurate than <code>touching()</code>.",
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f733236773670632e706e67",
                         code: "sprite1.distanceTo(sprite2) < 100",
                         tags: "touching sensing distance"
@@ -1596,8 +1591,15 @@
                      },
                      {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
                      {
-                        url:"./images/timer.png",
-                        description:"These blocks do not exist in WoofJS.",
+                        url:"./images/scratch_timer.png",
+                        description:"Number of seconds since the script started. If you want whole number seconds, use Math.round(timer()).",
+                        code:"timer()",
+                        tags: "timer sensing"
+                     },
+                     {
+                        url:"./images/scratch_reset_timer.png",
+                        description:"Reset the timer to 0.",
+                        code:"resetTimer()",
                         tags: "timer sensing"
                      },
                      {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
@@ -1677,7 +1679,7 @@
                         url: "./images/68747470733a2f2f692e696d6775722e636f6d2f697357785538432e706e67",
                         code: "year()",
                         tags: "current year time sensing"
-                    }, 
+                    },
                     {html:"<hr style=\"height:7px;border:none;color:#e0e0e0;background-color:#e0e0e0;\"/>"},
                     {
                         url: "./images/username.png",
@@ -2077,6 +2079,21 @@
                 },
             },
             methods: {
+                setUserUploadImages: function(images) {
+                    var newImages = this.menus['Sprites & Backgrounds']['Image'].filter(
+                        block => !block.userUploadImage
+                    )
+                    images.reverse() // show the newest first
+                    newImages.splice(1, 0, ...images.map(imageURL => {
+                        return {
+                            url: imageURL,
+                            code: 'var sprite1 = new Image({url: "' + imageURL + '"})',
+                            tags: "upload image picture",
+                            userUploadImage: true
+                        }
+                    }))
+                    this.menus['Sprites & Backgrounds']['Image'] = newImages
+                },
                 searchMenu: function(menu) {
                     if (this.search == '') {
                         return menu
